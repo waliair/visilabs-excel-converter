@@ -157,34 +157,34 @@ document.getElementById('upload').addEventListener('change', handleFileSelect, f
     setActiveRules(filterName, type);
     var sheet = getSheet(activeSheet);
 
-    if (type == 'array') {
+    Looper(type, sheet, elem, filterName);
+  }
+
+  function Looper(type, loopData, element, filterParameter) {
+    var parser = null;
+
+    if(type == 'rules') {parser = '\r\n'}
+    else if (type == 'widget-filter') parser = ','
+    else if (type == 'widget-fixed-product') parser = ';'
+
+    switch(type) {
+      case "array":
         var newArr = [];
-        sheet.forEach(function(item) {
-            newArr.push(item[filterName]);
+        loopData.forEach(function(item) {
+          newArr.push(item[filterParameter]);
         });
-        elem.innerHTML = JSON.stringify(newArr);
-    } else if (type == 'rules') {
-        var length = sheet.length;
+        element.innerHTML = JSON.stringify(newArr);
+        break;
+
+      case "rules":
+      case "widget-filter":
+      case "widget-fixed-product":
+        var length = loopData.length;
         var i=0;
         while (length--) {
-            elem.innerHTML += sheet[i][filterName] + '\r\n';
+            element.innerHTML += loopData[i][filterParameter] + parser;
             i++;
         }
-    } else if (type == 'widget-filter') {
-        var length = sheet.length;
-        var i=0;
-        while (length--) {
-            elem.innerHTML += sheet[i][filterName] + ',';
-            i++;
-        }
-        elem.innerHTML = elem.innerHTML.slice(0, -1);
-    } else if (type == 'widget-fixed-product') {
-        var length = sheet.length;
-        var i=0;
-        while (length--) {
-            elem.innerHTML += sheet[i][filterName] + ';';
-            i++;
-        }
-        elem.innerHTML = elem.innerHTML.slice(0, -1);
+        element.innerHTML = element.innerHTML.slice(0, -1);
     }
   }

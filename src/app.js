@@ -1,3 +1,15 @@
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-right',
+  iconColor: 'white',
+  customClass: {
+    popup: 'colored-toast'
+  },
+  showConfirmButton: false,
+  timer: 4000,
+  timerProgressBar: true
+})
+
 document.getElementById('upload').addEventListener('change', handleFileSelect, false);
     $(document).on("click", ".dropdown-item", handleJSONObject);
     document.getElementById('xl__json').addEventListener("click",getJsonData,false);
@@ -24,10 +36,19 @@ document.getElementById('upload').addEventListener('change', handleFileSelect, f
             var hasExistsAnyUndefined = XL_row_object[0].undefined;
 
             if(hasExistsAnyUndefined) {
-                alert("Lütfen yüklediğiniz excelde tüm headerlerin girildiğinden emin olun.");
-                return true;
+              Toast.fire({
+                icon: 'error',
+                title: 'Please make sure that all headers are entered in the excel you uploaded.'
+              });
+              return true;
             }
             stateObject[sheetName] = XL_row_object;
+            Toast.fire({
+              icon: 'success',
+              title: 'Excel successfully converted.'
+            });
+
+            console.log(stateObject);
             firstSheetLoop && loadDefaultHeader(sheetName);
             setSheetNames(sheetName, firstSheetLoop);
             openAccessControllerButtons();
@@ -117,9 +138,19 @@ document.getElementById('upload').addEventListener('change', handleFileSelect, f
 
   function copyAll() {
         var copyText = document.getElementById("xlx_html");
+        if(copyText.innerHTML == "") {
+          Toast.fire({
+            icon: 'error',
+            title: 'Please select a data to copy.'
+          });
+          return true;
+        }
         copyText.select();
         document.execCommand("copy");
-        alert("Kupon kodunuz kopyalanmıştır");
+        Toast.fire({
+          icon: 'success',
+          title: 'Data successfully copied to clipboard.'
+        });
   }
 
    function getJsonData() {

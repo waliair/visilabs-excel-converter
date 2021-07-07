@@ -47,8 +47,6 @@ document.getElementById('upload').addEventListener('change', handleFileSelect, f
               icon: 'success',
               title: 'Excel successfully converted.'
             });
-
-            console.log(stateObject);
             firstSheetLoop && loadDefaultHeader(sheetName);
             setSheetNames(sheetName, firstSheetLoop);
             openAccessControllerButtons();
@@ -212,10 +210,11 @@ document.getElementById('upload').addEventListener('change', handleFileSelect, f
       case "widget-fixed-product":
         var length = loopData.length;
         var i=0;
+        var processedData = "";
         while (length--) {
-            element.innerHTML += loopData[i][filterParameter] + parser;
+            processedData += loopData[i][filterParameter] + parser;
             i++;
         }
-        element.innerHTML = element.innerHTML.slice(0, -1);
+        element.innerHTML = processedData.slice(0, -1);
     }
   }

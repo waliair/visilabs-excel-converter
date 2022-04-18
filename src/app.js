@@ -131,6 +131,7 @@ document.getElementById('upload').addEventListener('change', handleFileSelect, f
   function handleFileSelect(evt) {
     var files = evt.target.files; 
     var xl2json = new ExcelToJSON();
+    console.log(files[0]);
     xl2json.parseExcel(files[0]);
   }
 
